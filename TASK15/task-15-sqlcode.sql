@@ -1,7 +1,7 @@
 CREATE TABLE dept (
-				id number(7) primary key,
-				name varchar2(25)
-				)
+		id number(7) primary key,
+		name varchar2(25)
+		)
 
 desc dept
 
