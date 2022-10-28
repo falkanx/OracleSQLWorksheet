@@ -1,19 +1,47 @@
-create user FURKAN IDENTIFIED BY FURKAN;
+SELECT max(salary) "Maximum", min(salary) "Minimum", sum(salary) "Sum", round(avg(salary)) AS "Average" FROM hr.employees;
 
-SELECT * FROM ALL_TABLES WHERE OWNER='FURKAN';
+SELECT job_id, max(salary) "Maximum", min(salary) "Minimum", sum(salary) "Sum", round(avg(salary)) AS "Average" FROM
+hr.employees GROUP BY job_id ORDER BY sum(salary) DESC;
+SELECT job id, count(*) FROM hr.employees WHERE job_id LIKE 'IT%' GROUP BY job_id;
 
-ALTER USER FURKAN QUOTA UNLIMITED ON USERS
+SELECT job_id, count(*) FROM hr.employees GROUP BY job_id ORDER BY count(*) DESC;
 
-CREATE TABLE FURKAN. DUMP_TEST_FURKAN (A NUMBER, B DATE);
-INSERT INTO FURKAN. DUMP_TEST_FURKAN VALUES (1, SYSDATE);
-INSERT INTO FURKAN. DUMP_TEST_FURKAN VALUES (2, SYSDATE);
-INSERT INTO FURKAN. DUMP_TEST_FURKAN VALUES (3, SYSDATE);
+SELECT manager_id, count(manager_id) AS "Number Of Managers" FROM hr.employees WHERE manager_id IS NOT NULL GROUP BY manager_id;
 
-SELECT FROM FURKAN. DUMP TEST FURKAN;
+SELECT count(count(manager_id)) AS "Number Of Managers" FROM hr.employees WHERE manager_id IS NOT NULL GROUP BY manager_id;
 
-create table FURKAN. DUMP_TEST_FURKAN1 as select * from FURKAN. DUMP_TEST_FURKAN;
-create table FURKAN. DUMP TEST FURKAN2 as select * from FURKAN. DUMP TEST FURKAN;
+SELECT max(salary) "MAX", min(salary) "MIN", (max(salary)-min(salary)) AS "DIFFERENCE" FROM hr. employees;
 
-SELECT * FROM IMPTST. DUMP_TEST_syk;
-SELECT * FROM IMPTST. DUMP_TEST_syk1;
-SELECT * FROM IMPTST. DUMP_TEST_syk2;
+SELECT COUNT(*) total,
+SUM(decode(to_char(hire_date,'yyyy'),1995,1,0)) "1995",
+SUM(decode(to_char(hire_date,'yyyy'),1996,1,0)) "1996",
+SUM(decode(to_char(hire_date,'yyyy'),1997,1,0)) "1997",
+SUM(decode(to_char(hire_date,'yyyy'),1998,1,0)) "1998"
+FROM hr.employees;
+
+SELECT
+	emp.last_name,
+	emp.department_id,
+	dept.department_name
+FROM
+hr.employees emp,
+hr.departments dept
+WHERE
+emp.department_id dept.department_id;
+
+SELECT
+	emp.last_name,
+	emp.job_id,
+	emp.department_id,
+	dept.department_name,
+	loc.city
+FROM
+	hr.employees emp,
+	hr.departments dept,
+	hr.locations loc
+WHERE
+	emp.department_id = dept.department_id
+	AND dept.location_id = loc.location_id
+	AND instr(loc.city, 'Toronto')>0;
+
+SELECT last_name, hire_date FROM hr.employees WHERE hire_date>=(SELECT hire_date FROM hr.employees WHERE last_name='Davies') ORDER BY 2 ASC;
